@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2024 at 06:53 AM
+-- Generation Time: Nov 07, 2024 at 03:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -73,6 +73,14 @@ CREATE TABLE `leidimai` (
   `fk_Naikintojas` int(11) NOT NULL,
   `fk_Vieta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `leidimai`
+--
+
+INSERT INTO `leidimai` (`id_Leidimas`, `Data`, `fk_Administratorius`, `fk_Naikintojas`, `fk_Vieta`) VALUES
+(1, '2024-11-07', 3, 6, 6),
+(2, '2024-11-07', 3, 6, 5);
 
 -- --------------------------------------------------------
 
@@ -190,6 +198,7 @@ CREATE TABLE `vietos` (
   `Miestas_Kaimas` varchar(100) NOT NULL,
   `Gatve` varchar(100) NOT NULL,
   `Plotas` int(11) NOT NULL,
+  `Nuotrauka` varchar(255) DEFAULT NULL,
   `fk_Apskritis` int(11) NOT NULL,
   `fk_Savivaldybe` int(11) NOT NULL,
   `fk_Koordinate` int(11) DEFAULT NULL,
@@ -200,10 +209,10 @@ CREATE TABLE `vietos` (
 -- Dumping data for table `vietos`
 --
 
-INSERT INTO `vietos` (`id_Vieta`, `Sunaikinta`, `Kurimo_data`, `Naikinimo_data`, `Miestas_Kaimas`, `Gatve`, `Plotas`, `fk_Apskritis`, `fk_Savivaldybe`, `fk_Koordinate`, `fk_Savininkas`) VALUES
-(5, 0, '2024-11-06', NULL, 'Kaunas', 'ledos g. 34b', 8, 1, 2, NULL, 3),
-(6, 0, '2024-11-06', NULL, 'Kaunas', 'ledos g. 34b', 4, 2, 8, NULL, 3),
-(7, 0, '2024-11-06', NULL, 'Sleikes', 'kalno', 6, 4, 25, NULL, 6);
+INSERT INTO `vietos` (`id_Vieta`, `Sunaikinta`, `Kurimo_data`, `Naikinimo_data`, `Miestas_Kaimas`, `Gatve`, `Plotas`, `Nuotrauka`, `fk_Apskritis`, `fk_Savivaldybe`, `fk_Koordinate`, `fk_Savininkas`) VALUES
+(5, 0, '2024-11-06', NULL, 'Kaunas', 'ledos g. 34b', 8, NULL, 1, 2, NULL, 3),
+(6, 0, '2024-11-06', NULL, 'Kaunas', 'ledos g. 34b', 4, NULL, 2, 8, NULL, 3),
+(8, 0, '2024-11-07', NULL, 'Saulinciai', 'debesu', 5, '../uploads/SAS_grupiu_normalumo_tikrinimas.png', 5, 33, NULL, 6);
 
 --
 -- Indexes for dumped tables
@@ -226,7 +235,7 @@ ALTER TABLE `koordinates`
 --
 ALTER TABLE `leidimai`
   ADD PRIMARY KEY (`id_Leidimas`),
-  ADD KEY `fk_Administratorius` (`fk_Administratorius`),
+  ADD UNIQUE KEY `unique_permit` (`fk_Administratorius`,`fk_Naikintojas`,`fk_Vieta`),
   ADD KEY `fk_Naikintojas` (`fk_Naikintojas`);
 
 --
@@ -272,7 +281,7 @@ ALTER TABLE `koordinates`
 -- AUTO_INCREMENT for table `leidimai`
 --
 ALTER TABLE `leidimai`
-  MODIFY `id_Leidimas` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Leidimas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `naudotojai`
@@ -290,7 +299,7 @@ ALTER TABLE `savivaldybes`
 -- AUTO_INCREMENT for table `vietos`
 --
 ALTER TABLE `vietos`
-  MODIFY `id_Vieta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_Vieta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
