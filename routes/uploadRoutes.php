@@ -19,10 +19,7 @@ switch ($page) {
     case 'edit-upload':
         if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['page']) && $_GET['page'] === 'edit-upload') {
             $uploadController->showEditForm($_GET['id']);
-        }
-        break;
-    case 'process-edit-upload':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['page']) && $_GET['page'] === 'process-edit') {
+        } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['page']) && $_GET['page'] === 'edit-upload') {
             $uploadController->processEdit($_GET['id']);
         }
         break;

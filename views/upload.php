@@ -16,7 +16,8 @@
     <form action="index.php?page=process-upload" method="POST" enctype="multipart/form-data">
         <div>
             <label for="photo">Nuotrauka:</label>
-            <input type="file" id="photo" name="photo" accept="image/*" required>
+            <input type="file" id="photo" name="photo" accept="image/*" required onchange="previewPhoto(event)">
+            <img id="currentPhoto" style="display: none; max-width: 800px; margin-top: 10px;">
         </div>
 
         <!-- Dropdowns populated from the database -->
@@ -56,6 +57,7 @@
         <button type="submit">Įkelti</button>
     </form>
     <script src="/scripts/fetchMunicipalities.js"></script>
+    <script src="/scripts/photoPreview.js"></script>     
 
 </body>
 

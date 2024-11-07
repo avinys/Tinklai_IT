@@ -27,7 +27,7 @@
         </tr>
         <?php foreach ($uploads as $upload): ?>
             <tr>
-                <td><img src="<?= htmlspecialchars($upload['photo_path']) ?>" alt="Nuotrauka" width="100"></td>
+                <td><img src="<?= htmlspecialchars($upload['Nuotrauka']) ?>" alt="Nuotrauka" width="100"/></td>
                 <td><?= htmlspecialchars($upload['Miestas_Kaimas']) ?></td>
                 <td><?= htmlspecialchars($upload['Gatve']) ?></td>
                 <td><?= htmlspecialchars($upload['Plotas']) ?></td>

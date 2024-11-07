@@ -46,16 +46,16 @@ class UploadController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
             $pdo = getDatabaseConnection();
-
+    
             // File upload
             $photo = $_FILES['photo'];
             $uploadDir = '../uploads/';
             $photoPath = $uploadDir . basename($photo['name']);
             move_uploaded_file($photo['tmp_name'], $photoPath);
-
+    
             // Extract metadata (coordinates) if available
             $coordinates = $this->getCoordinatesFromMetadata($photoPath);
-
+    
             // Gather location info
             $region = $_POST['region'];
             $municipality = $_POST['municipality'];
@@ -64,7 +64,7 @@ class UploadController
             $area = sanitize($_POST['area']);
             $latitude = $coordinates['latitude'] ?? null;
             $longitude = $coordinates['longitude'] ?? null;
-
+    
             // Insert coordinate data if available
             $coordinateId = null;
             if ($latitude && $longitude) {
@@ -72,10 +72,10 @@ class UploadController
                 $coordinateStmt->execute(['latitude' => $latitude, 'longitude' => $longitude]);
                 $coordinateId = $pdo->lastInsertId();
             }
-
-            // Insert location data into the 'vieta' table
-            $stmt = $pdo->prepare("INSERT INTO vietos (Miestas_Kaimas, Gatve, Plotas, fk_Apskritis, fk_Savivaldybe, fk_Koordinate, fk_Savininkas, Sunaikinta, Kurimo_data) 
-                                   VALUES (:city, :street, :area, :region, :municipality, :coordinate, :owner, 0, NOW())");
+    
+            // Insert location data into the 'vieta' table, including the photo path
+            $stmt = $pdo->prepare("INSERT INTO vietos (Miestas_Kaimas, Gatve, Plotas, fk_Apskritis, fk_Savivaldybe, fk_Koordinate, fk_Savininkas, Sunaikinta, Kurimo_data, Nuotrauka) 
+                                   VALUES (:city, :street, :area, :region, :municipality, :coordinate, :owner, 0, NOW(), :photoPath)");
             $stmt->execute([
                 'city' => $city,
                 'street' => $street,
@@ -83,13 +83,15 @@ class UploadController
                 'region' => $region,
                 'municipality' => $municipality,
                 'coordinate' => $coordinateId,
-                'owner' => $_SESSION['user_id']
+                'owner' => $_SESSION['user_id'],
+                'photoPath' => $photoPath
             ]);
-
+    
             header('Location: index.php?page=home');
             exit();
         }
     }
+    
 
     private function getCoordinatesFromMetadata($photoPath)
     {
@@ -170,11 +172,14 @@ class UploadController
             die("Įrašas nerastas");
         }
 
-        // Fetch regions and municipalities for dropdowns
+        // Fetch regions for dropdown
         $regionsStmt = $pdo->query("SELECT id_Apskritis AS id, Pavadinimas AS name FROM apskritys");
         $regions = $regionsStmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $municipalitiesStmt = $pdo->query("SELECT id_Savivaldybe AS id, Pavadinimas AS name FROM savivaldybes");
+        // Fetch municipalities based on the selected region
+        $selectedRegionId = $upload['fk_Apskritis'];
+        $municipalitiesStmt = $pdo->prepare("SELECT id_Savivaldybe AS id, Pavadinimas AS name FROM savivaldybes WHERE fk_Apskritis = :region_id");
+        $municipalitiesStmt->execute(['region_id' => $selectedRegionId]);
         $municipalities = $municipalitiesStmt->fetchAll(PDO::FETCH_ASSOC);
 
         include '../views/edit-upload.php';
@@ -195,7 +200,7 @@ class UploadController
 
         // Prepare the data to update
         $data = [
-            'village' => sanitize($_POST['village']),
+            'city' => sanitize($_POST['city']),
             'street' => sanitize($_POST['street']),
             'area' => (int)$_POST['area'],
             'region' => (int)$_POST['region'],
@@ -206,9 +211,9 @@ class UploadController
         // Update query with photo if updated
         if ($photoPath) {
             $data['photo'] = $photoPath;
-            $stmt = $pdo->prepare("UPDATE vietos SET Miestas = :village, Gatve = :street, Plotas = :area, fk_Apskritis = :region, fk_Savivaldybe = :municipality, photo = :photo WHERE id_Vieta = :id");
+            $stmt = $pdo->prepare("UPDATE vietos SET Miestas_Kaimas = :city, Gatve = :street, Plotas = :area, fk_Apskritis = :region, fk_Savivaldybe = :municipality, photo = :photo WHERE id_Vieta = :id");
         } else {
-            $stmt = $pdo->prepare("UPDATE vietos SET Miestas = :village, Gatve = :street, Plotas = :area, fk_Apskritis = :region, fk_Savivaldybe = :municipality WHERE id_Vieta = :id");
+            $stmt = $pdo->prepare("UPDATE vietos SET Miestas_Kaimas = :city, Gatve = :street, Plotas = :area, fk_Apskritis = :region, fk_Savivaldybe = :municipality WHERE id_Vieta = :id");
         }
 
         $stmt->execute($data);

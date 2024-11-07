@@ -17,7 +17,8 @@ if (session_status() === PHP_SESSION_NONE) {
             <?php if ($_SESSION['role'] === 'Naikintojas'): ?>
                 <a href="index.php?page=delete-photos">Atliktas naikinimas</a>
             <?php elseif ($_SESSION['role'] === 'Administratorius'): ?>
-                <a href="index.php?page=create-permission">Sukurti naikinimo leidimą</a>
+                <a href="index.php?page=assign-permits">Sukurti naikinimo leidimą</a>
+                <a href="index.php?page=view-permits">Peržiūrėti naikinimo leidimus</a>
                 <a href="index.php?page=view-eradication-managers">Peržiūrėti naikintojus</a>
                 <a href="index.php?page=view-users">Peržiūrėti naudotojus</a>
             <?php endif; ?>
