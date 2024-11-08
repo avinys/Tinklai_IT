@@ -19,7 +19,6 @@ if (session_status() === PHP_SESSION_NONE) {
             <?php elseif ($_SESSION['role'] === 'Administratorius'): ?>
                 <a href="index.php?page=assign-permits">Sukurti naikinimo leidimą</a>
                 <a href="index.php?page=view-permits">Peržiūrėti naikinimo leidimus</a>
-                <a href="index.php?page=view-eradication-managers">Peržiūrėti naikintojus</a>
                 <a href="index.php?page=view-users">Peržiūrėti naudotojus</a>
             <?php endif; ?>
         <?php else: ?>

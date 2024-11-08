@@ -10,6 +10,7 @@ switch ($page) {
         } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['page']) && $_GET['page'] === 'assign-permits') {
             $eradicationController->processAssignPermit();
         }
+        break;
     case 'view-permits':
         $eradicationController->viewAllPermits();
         break;

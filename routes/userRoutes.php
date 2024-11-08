@@ -12,8 +12,12 @@ switch ($page) {
         }
         break;
     case 'edit-user':
-        if (isset($_GET['id']) && isset($_GET['type'])) {
-            $usersController->editUser($_GET['id'], $_GET['type']);
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['page']) && $_GET['page'] === 'edit-user' && isset($_GET['id'])){
+            $usersController->viewEditUser($_GET['id']);
         }
+        elseif (isset($_GET['id']) && 
+            $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['page']) && $_GET['page'] === 'edit-user') {
+                $usersController->processEditUser($_GET['id'], $_GET['type']);
+           }
         break;
 }

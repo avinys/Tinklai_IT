@@ -27,7 +27,7 @@ include '../views/header.php'; // Include the header file
 
         <button type="submit">Prisijungti</button>
     </form>
-    <p>Neturite paskyros? <a href="index.php?page=home">Registruokitės čia</a></p>
+    <p>Neturite paskyros? <a href="index.php?page=register">Registruokitės čia</a></p>
 </body>
 
 </html>

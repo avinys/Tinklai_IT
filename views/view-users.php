@@ -7,7 +7,8 @@ include '../views/header.php';
 <h2>Naudotojų sąrašas</h2>
 <a href="index.php?page=view-users&type=Naikintojas"><p>Filtruoti tik naikintojus</p></a>
 <a href="index.php?page=view-users&type=Paprastas"><p>Filtruoti tik paprastus</p></a>
-<a href="index.php?page=view-users"><p>Rodyti paprastus ir naikintojus</p></a>
+<a href="index.php?page=view-users&type=Administratorius"><p>Filtruoti tik administratorius</p></a>
+<a href="index.php?page=view-users"><p>Rodyti visus</p></a>
 
 <table border="1">
     <tr>
@@ -26,7 +27,7 @@ include '../views/header.php';
         <td><?= htmlspecialchars($user['El_pastas']) ?></td>
         <td><?= htmlspecialchars($user['Tipas']) ?></td>
         <td>
-            <a href="index.php?page=edit-user&id=<?= $user['id_Naudotojas'] ?>">Redaguoti</a> |
+            <a href="index.php?page=edit-user&id=<?= $user['id_Naudotojas'] ?>">Redaguoti tipą</a> |
             <a href="index.php?page=delete-user&id=<?= $user['id_Naudotojas'] ?>" onclick="return confirm('Ar tikrai norite ištrinti šį vartotoją?');">Ištrinti</a>
         </td>
     </tr>
