@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2024 at 03:21 PM
+-- Generation Time: Nov 08, 2024 at 09:14 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -80,7 +80,9 @@ CREATE TABLE `leidimai` (
 
 INSERT INTO `leidimai` (`id_Leidimas`, `Data`, `fk_Administratorius`, `fk_Naikintojas`, `fk_Vieta`) VALUES
 (1, '2024-11-07', 3, 6, 6),
-(2, '2024-11-07', 3, 6, 5);
+(2, '2024-11-07', 3, 6, 5),
+(6, '2024-11-08', 3, 5, 6),
+(8, '2024-11-08', 3, 6, 8);
 
 -- --------------------------------------------------------
 
@@ -103,8 +105,10 @@ CREATE TABLE `naudotojai` (
 
 INSERT INTO `naudotojai` (`id_Naudotojas`, `Vardas`, `Pavarde`, `El_pastas`, `Tipas`, `Slaptazodis`) VALUES
 (3, 'Arvydas', 'Vingis', 'arvydas.vingis1@gmail.com', 'Administratorius', '$2y$10$7kMZazTldav0Nll5xFlu/.84KxyauHB/n3lsK5jgsmaiI6AP2gvfq'),
-(5, 'Tadas', 'Atmazas', 'tadas@gmail.com', 'Paprastas', '$2y$10$o0aOOc9h2wW9nJJnswa8b.ZcFkfW.Ylo/CGObIw6UWGcWWwZfu/Ky'),
-(6, 'Marius', 'Tabalius', 'marius@gmail.com', 'Naikintojas', '$2y$10$c43Z8k4eCAxjbrmy7FUP1OYDHnqIXNLIej0oQbWczHJ/390Y9vBBu');
+(5, 'Tadas', 'Atmazas', 'tadas@gmail.com', 'Naikintojas', '$2y$10$o0aOOc9h2wW9nJJnswa8b.ZcFkfW.Ylo/CGObIw6UWGcWWwZfu/Ky'),
+(6, 'Marius', 'Tabalius', 'marius@gmail.com', 'Naikintojas', '$2y$10$c43Z8k4eCAxjbrmy7FUP1OYDHnqIXNLIej0oQbWczHJ/390Y9vBBu'),
+(7, 'Tomas', 'Ramonas', 'tomas@gmail.com', 'Administratorius', '$2y$10$1IXPEwQyr6SBW1UNwHqtD.Dll/Q/uBEf/ZPKiVFzq5ktmQOrIPDwC'),
+(8, 'Rimas', 'Nurimes', 'rimas@gmail.com', 'Paprastas', '$2y$10$5IX0GeCuVxt6o9dsfNRQbOC5e7wT2rHnlQe/jQTr5/dXqS5VFpbHm');
 
 -- --------------------------------------------------------
 
@@ -281,13 +285,13 @@ ALTER TABLE `koordinates`
 -- AUTO_INCREMENT for table `leidimai`
 --
 ALTER TABLE `leidimai`
-  MODIFY `id_Leidimas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_Leidimas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `naudotojai`
 --
 ALTER TABLE `naudotojai`
-  MODIFY `id_Naudotojas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_Naudotojas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `savivaldybes`
