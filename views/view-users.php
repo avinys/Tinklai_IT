@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Naudotojų sąrašas</title>
-    <link rel="stylesheet" href="/styles/global.css">
+    <!-- <link rel="stylesheet" href="../styles/global.css"> -->
+    <link rel="stylesheet" href="../public/styles/global.css">
 </head>
 <body>
 

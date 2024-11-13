@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Įkelti Sosnovskio Barščių Augimo Vietą</title>
-    <link rel="stylesheet" href="/styles/global.css"> <!-- Correct path to the CSS file -->
+    <!-- <link rel="stylesheet" href="../styles/global.css"> -->
+    <link rel="stylesheet" href="../public/styles/global.css">
 </head>
 
 <body>
@@ -64,8 +65,11 @@ include '../views/header.php'; // Include the header file
     <p>&copy; 2024 Sosnovskio Barščių Registravimo Sistema. Autorius: Arvydas Vingis</p>
 </footer>
 
-<script src="/scripts/fetchMunicipalities.js"></script>
-<script src="/scripts/photoPreview.js"></script>     
+<!-- <script src="/scripts/fetchMunicipalities.js"></script>
+<script src="/scripts/photoPreview.js"></script>   -->
+
+<script src="../public/scripts/fetchMunicipalities.js"></script>
+<script src="../public/scripts/photoPreview.js"></script> 
 
 </body>
 

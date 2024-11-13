@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prisijungimas</title>
-    <link rel="stylesheet" href="/styles/global.css"> <!-- Ensure the path to your global.css is correct -->
+    <!-- <link rel="stylesheet" href="../styles/global.css"> -->
+    <link rel="stylesheet" href="../public/styles/global.css">
 </head>
 
 <body>

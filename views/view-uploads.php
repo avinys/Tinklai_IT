@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Mano Įkėlimai</title>
-    <link rel="stylesheet" href="/styles/global.css"> <!-- Correct path to the CSS file -->
+    <!-- <link rel="stylesheet" href="../styles/global.css"> -->
+    <link rel="stylesheet" href="../public/styles/global.css">
 </head>
 
 <body>

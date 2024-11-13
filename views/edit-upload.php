@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Redaguoti Įrašą</title>
-    <link rel="stylesheet" href="/styles/global.css"> <!-- Correct path to the CSS file -->
+    <!-- <link rel="stylesheet" href="../styles/global.css"> -->
+    <link rel="stylesheet" href="../public/styles/global.css">
 </head>
 <body>
 
@@ -72,8 +73,11 @@
     <p>&copy; 2024 Sosnovskio Barščių Registravimo Sistema. Autorius: Arvydas Vingis</p>
 </footer>
 
-<script src="/scripts/fetchMunicipalities.js"></script>
-<script src="/scripts/photoPreview.js"></script>  
+<!-- <script src="/scripts/fetchMunicipalities.js"></script>
+<script src="/scripts/photoPreview.js"></script>   -->
+
+<script src="../public/scripts/fetchMunicipalities.js"></script>
+<script src="../public/scripts/photoPreview.js"></script> 
 
 </body>
 </html>

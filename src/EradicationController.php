@@ -155,7 +155,7 @@ class EradicationController
             header("Location: index.php?page=unauthorized");
             exit();
         }
-        print_r($_SESSION);
+        //print_r($_SESSION);
         $userId = $_SESSION['user_id'];
 
         // Fetch permits from the database
