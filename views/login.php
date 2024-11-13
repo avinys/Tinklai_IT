@@ -5,29 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prisijungimas</title>
+    <link rel="stylesheet" href="/styles/global.css"> <!-- Ensure the path to your global.css is correct -->
 </head>
 
 <body>
 
-<?php
-include '../views/header.php'; // Include the header file
-?>
+    <?php
+    include '../views/header.php'; // Include the header file
+    ?>
 
-    <h2>Prisijungimas</h2>
-    <form action="index.php?page=process-login" method="POST">
-        <div>
-            <label for="email">El. paštas:</label>
-            <input type="email" id="email" name="email" required><br>
-        </div>
+    <main class="main-content container text-center">
+        <div class=container>
+            <h2 class="mb-2">Prisijungimas</h2>
+            <form action="index.php?page=process-login" method="POST" class="mb-3" style="width: 70%; max-width: 800px;">
+                <div class="mb-2">
+                    <label for="email" class="form-label">El. paštas:</label>
+                    <input type="email" id="email" name="email" class="form-input" required>
+                </div>
 
-        <div>
-            <label for="password">Slaptažodis:</label>
-            <input type="password" id="password" name="password" required><br>
-        </div>
+                <div class="mb-2">
+                    <label for="password" class="form-label">Slaptažodis:</label>
+                    <input type="password" id="password" name="password" class="form-input" required>
+                </div>
+                <div class="actions">
+                    <button type="submit" class="button">Prisijungti</button>
+                </div>
+            </form>
+            <p>Neturite paskyros? <a href="index.php?page=register">Registruokitės čia</a></p>
+    </main>
 
-        <button type="submit">Prisijungti</button>
-    </form>
-    <p>Neturite paskyros? <a href="index.php?page=register">Registruokitės čia</a></p>
+    <footer class="footer">
+        <p>&copy; 2024 Sosnovskio Barščių Registravimo Sistema. Autorius: Arvydas Vingis</p>
+    </footer>
+
 </body>
 
 </html>

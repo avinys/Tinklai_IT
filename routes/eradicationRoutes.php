@@ -18,6 +18,16 @@ switch ($page) {
         if ($_GET['page'] === 'delete-permit' && isset($_GET['id'])) {
             $eradicationController->deletePermit((int)$_GET['id']);
         }
-        break;        
+        break;   
+    case 'view-assigned-permits':
+        $eradicationController->viewAssignedPermits();
+        break;
+    case 'complete-eradication':
+        $eradicationController->loadEradicationForm();
+        break; 
+    case 'submit-eradication':
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['page']) && $_GET['page'] === 'submit-eradication') {
+        $eradicationController->processEradicationForm();
+    }  
 
 }

@@ -9,11 +9,13 @@ if (!isset($_SESSION['username'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Sosnovskio Barščių Registracija</title>
 </head>
+
 <body>
     <h2>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></h2>
     <h3>Your Reported Locations</h3>
@@ -33,7 +35,7 @@ if (!isset($_SESSION['username'])) {
             <td>54.6872, 25.2797</td>
             <td>500</td>
             <td>
-                <a href="edit.php?id=1">Edit</a> | 
+                <a href="edit.php?id=1">Edit</a> |
                 <a href="delete.php?id=1">Delete</a>
             </td>
         </tr>
@@ -42,5 +44,10 @@ if (!isset($_SESSION['username'])) {
 
     <p><a href="upload.php">Add New Location</a></p>
     <p><a href="logout.php">Logout</a></p>
+
+    <footer class="footer">
+        <p>&copy; 2024 Sosnovskio Barščių Registravimo Sistema. Autorius: Arvydas Vingis</p>
+    </footer>
 </body>
+
 </html>

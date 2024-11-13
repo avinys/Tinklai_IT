@@ -1,0 +1,314 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    background-color: #f4f4f9;
+    line-height: 1.6;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+main {
+    flex: 1;
+}
+
+.container {
+    /* max-width: 800px; */
+    margin: auto auto;
+    padding: 20px;
+}
+
+.header, .footer {
+    background-color: #2e7d32;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #2e7d32;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.footer {
+    background-color: #2e7d32;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.header h1 {
+    color: white;
+    font-size: 24px;
+    margin: 0;
+}
+
+.header-title {
+    margin-bottom: 15px;
+    font-size: 1.8em;
+}
+
+.nav {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.nav-link {
+    color: #e0f2f1; /* Light greenish for contrast */
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+    justify-content: center;
+}
+
+.nav-link:hover {
+    background-color: #388e3c; /* Slightly darker green on hover */
+    color: #fff;
+}
+
+/* Main Content */
+.main-content {
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 70%;
+}
+
+img {
+    border-radius: 6px;
+}
+
+/* Typography */
+h1, h2, h3 {
+    color: #2e7d32; /* Green color for headings */
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+p {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+a {
+    color: #388e3c; /* Green link color */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Buttons */
+.button {
+    display: inline-block;
+    background-color: #388e3c; /* Green button */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+    font-size: 14px;
+}
+
+.button-alt {
+    display: inline-block;
+    background-color: white;
+    color: #388e3c;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    border-width: 3px;
+    border-style:solid;
+    border-color:  #388e3c;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+    font-size: 14px;
+}
+
+.button:hover {
+    background-color: #2e7d32; /* Darker green on hover */
+}
+
+.button-alt:hover {
+    background-color: #cde6ce; /* Darker green on hover */
+    color: black;
+}
+
+/* Forms */
+form {
+    margin: 20px auto;
+    max-width: 600px; /* Adjusted max width for a more centered look */
+    text-align: center; /* Aligns labels and fields to the left */
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="number"],
+form select,
+form textarea {
+    width: 100%; /* Consistent width for all fields */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px; /* Larger font for readability */
+    background-color: #f9f9f9; /* Light background for inputs */
+}
+
+form input[type="number"] {
+    max-width: 150px; /* Limits width for number fields */
+}
+
+form select {
+    width: 100%; /* Set to full width of container */
+    max-width: 200px; /* Adjust width as needed */
+    padding: 8px; /* Add padding for a better appearance */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    -webkit-appearance: none; /* Remove default styling in WebKit browsers */
+    -moz-appearance: none; /* Remove default styling in Mozilla browsers */
+    appearance: none; /* Remove default styling in other browsers */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,5" fill="%23388e3c"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+}
+
+form select:focus {
+    border-color: #2e7d32; /* Green border on focus */
+    outline: none;
+    box-shadow: 0 0 5px rgba(46, 125, 50, 0.5); /* Subtle shadow on focus */
+}
+
+form input[type="submit"],
+form button {
+    background-color: #388e3c;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+form input[type="submit"]:hover,
+form button:hover {
+    background-color: #2e7d32;
+}
+
+
+/* Table */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table th, .table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.table th {
+    background-color: #2e7d32; /* Green header background */
+    color: #fff;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Cards for Dashboard */
+.card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Alerts */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 3px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.mt-1 { margin-top: 10px; }
+.mt-2 { margin-top: 20px; }
+.mt-3 { margin-top: 30px; }
+.mb-1 { margin-bottom: 10px; }
+.mb-2 { margin-bottom: 20px; }
+.mb-3 { margin-bottom: 30px; }
+
+/* Footer */
+.footer {
+    font-size: 0.9em;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    background-color: #2e7d32;
+}

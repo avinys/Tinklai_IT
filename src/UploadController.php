@@ -143,9 +143,16 @@ class UploadController
         } elseif ($userRole === 'Naikintojas') {
             // Destroyer can see own uploads and those assigned to them
             $stmt = $pdo->prepare("
-            SELECT v.*
+            SELECT v.*,
+            apskritys.Pavadinimas AS apskritis,
+            savivaldybes.Pavadinimas AS savivaldybe,
+            koordinates.Platuma AS platuma,
+            koordinates.Ilguma AS ilguma
             FROM vietos v
             LEFT JOIN leidimai l ON v.id_Vieta = l.fk_Vieta
+            JOIN savivaldybes ON v.fk_Savivaldybe = savivaldybes.id_Savivaldybe
+            JOIN apskritys ON v.fk_Apskritis = apskritys.id_Apskritis
+            LEFT JOIN koordinates ON v.fk_Koordinate = koordinates.id_Koordinate
             WHERE v.fk_Savininkas = :userId OR l.fk_Naikintojas = :userId
         ");
             $stmt->execute(['userId' => $userId]);

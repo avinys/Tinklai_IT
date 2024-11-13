@@ -124,4 +124,137 @@ class EradicationController
         header("Location: index.php?page=home");
         exit();
     }
+
+    public function viewAssignedPermits()
+    {
+        // Check if user is admin
+        if ($_SESSION['role'] == 'Paprastas') {
+            header("Location: index.php?page=unauthorized");
+            exit();
+        }
+        print_r($_SESSION);
+        $userId = $_SESSION['user_id'];
+
+        // Fetch permits from the database
+        $pdo = getDatabaseConnection();
+        $stmt = $pdo->query("
+                SELECT 
+                    leidimai.id_Leidimas AS permit_id,
+                    leidimai.Data AS date,
+                    apskritys.Pavadinimas AS region,
+                    savivaldybes.Pavadinimas AS municipality,
+                    vietos.Miestas_Kaimas AS city,
+                    vietos.Gatve AS street,
+                    vietos.Plotas AS area,
+                    vietos.Nuotrauka AS photoPath,
+                    koordinates.Platuma AS latitude,
+                    koordinates.Ilguma AS longitude
+
+                FROM leidimai
+                JOIN vietos ON leidimai.fk_Vieta = vietos.id_Vieta
+                JOIN apskritys ON vietos.fk_Apskritis = apskritys.id_Apskritis
+                JOIN savivaldybes ON vietos.fk_Savivaldybe = savivaldybes.id_Savivaldybe
+                LEFT JOIN koordinates ON vietos.fk_Koordinate = koordinates.id_Koordinate
+
+                WHERE leidimai.Sunaikinimo_data IS NULL AND leidimai.fk_Naikintojas = $userId;
+            ");
+        $places = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Load the view to display permits
+        include '../views/view-assigned-permits.php';
+    }
+
+    public function loadEradicationForm() {
+        // Check if the user is authorized
+        if ($_SESSION['role'] != 'Naikintojas') {
+            header("Location: index.php?page=unauthorized");
+            exit();
+        }
+    
+        // Get permit ID from request
+        $permitId = $_GET['id'] ?? null;
+        if (!$permitId) {
+            header("Location: index.php?page=404");
+            exit();
+        }
+    
+        // Fetch permit details from the database
+        $pdo = getDatabaseConnection();
+        $stmt = $pdo->prepare("
+            SELECT 
+                leidimai.id_Leidimas AS permit_id,
+                leidimai.Data AS date,
+                apskritys.Pavadinimas AS region,
+                savivaldybes.Pavadinimas AS municipality,
+                vietos.Miestas_Kaimas AS city,
+                vietos.Gatve AS street,
+                vietos.Plotas AS area,
+                koordinates.Platuma AS latitude,
+                koordinates.Ilguma AS longitude
+            FROM leidimai
+            JOIN vietos ON leidimai.fk_Vieta = vietos.id_Vieta
+            JOIN apskritys ON vietos.fk_Apskritis = apskritys.id_Apskritis
+            JOIN savivaldybes ON vietos.fk_Savivaldybe = savivaldybes.id_Savivaldybe
+            LEFT JOIN koordinates ON vietos.fk_Koordinate = koordinates.id_Koordinate
+            WHERE leidimai.id_Leidimas = :permitId
+        ");
+        $stmt->bindParam(':permitId', $permitId, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        $permit = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$permit) {
+            header("Location: index.php?page=error&message=Permit Not Found");
+            exit();
+        }
+    
+        // Load the eradication form view
+        include '../views/complete-eradication.php';
+    }
+
+
+    public function processEradicationForm() {
+        // Check if the user is authorized
+        if ($_SESSION['role'] != 'Naikintojas') {
+            header("Location: index.php?page=unauthorized");
+            exit();
+        }
+    
+        // Get permit ID and eradication data from request
+        $permitId = $_POST['permit_id'] ?? null;
+        $eradicationDate = $_POST['eradication_date'] ?? null;
+        $useCurrentDate = isset($_POST['use_current_date']);
+    
+        // Validate the permit ID
+        if (!$permitId) {
+            header("Location: index.php?page=error&message=Invalid Permit ID");
+            exit();
+        }
+    
+        // Set eradication date
+        if ($useCurrentDate) {
+            $eradicationDate = date('Y-m-d');
+        } elseif (!$eradicationDate) {
+            header("Location: index.php?page=error&message=Eradication Date Required");
+            exit();
+        }
+    
+        // Update the database with the eradication date
+        $pdo = getDatabaseConnection();
+        $stmt = $pdo->prepare("
+            UPDATE leidimai
+            SET Sunaikinimo_data = :eradicationDate
+            WHERE id_Leidimas = :permitId AND fk_Naikintojas = :eradicatorId
+        ");
+        $stmt->bindParam(':eradicationDate', $eradicationDate);
+        $stmt->bindParam(':permitId', $permitId, PDO::PARAM_INT);
+        $stmt->bindParam(':eradicatorId', $_SESSION['user_id'], PDO::PARAM_INT);
+    
+        if ($stmt->execute()) {
+            header("Location: index.php?page=view-assigned-permits&message=Naikinimas ");
+        } else {
+            header("Location: index.php?page=error&message=Failed to Process Eradication");
+        }
+    }
+    
+    
 }

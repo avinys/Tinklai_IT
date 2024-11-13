@@ -13,7 +13,7 @@ if (in_array($page, ['login', 'register', 'process-login', 'process-register', '
     require '../routes/userRoutes.php';
 }elseif(in_array($page, ['upload', 'fetch-municipalities', 'process-upload', 'view-uploads', 'edit-upload', 'process-edit-upload'])) {
     require '../routes/uploadRoutes.php';
-} elseif(in_array($page, ['assign-permits', 'view-permits', 'delete-permit'])){ 
+} elseif(in_array($page, ['assign-permits', 'view-permits', 'delete-permit', 'view-assigned-permits', 'complete-eradication', 'submit-eradication'])){ 
     require '../routes/eradicationRoutes.php';
 }else {
     require '../routes/generalRoutes.php';
