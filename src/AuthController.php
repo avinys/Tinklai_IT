@@ -76,10 +76,10 @@ class AuthController
                 header('Location: index.php?page=home');
                 exit();
             } else {
-                echo "<script>
-                        alert('Neteisingas el. paštas arba slaptažodis.');
-                        window.location.href = 'index.php?page=login';
-                      </script>";
+                $_SESSION['alert_message'] = "Neteisingas el. paštas arba slaptažodis.";
+                $_SESSION['alert_type'] = "error";
+                header("Location: index.php?page=login");
+                exit;
             }
         }
     }

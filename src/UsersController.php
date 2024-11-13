@@ -42,7 +42,8 @@ class UsersController
     public function deleteUser($id)
     {
         $pdo = getDatabaseConnection();
-        $stmt = $pdo->prepare("DELETE FROM Naudotojai WHERE id_Naudotojas = :id");
+        $stmt = $pdo->prepare("DELETE FROM leidimai WHERE fk_Naikintojas = :id OR fk_Administratorius = :id;
+                               DELETE FROM naudotojai WHERE id_Naudotojas = :id;");
 
         if ($stmt->execute(['id' => $id])) {
             $_SESSION['alert_message'] = "Naudotojas sėkmingai ištrintas!";
