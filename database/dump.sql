@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2024 at 09:14 AM
+-- Generation Time: Nov 14, 2024 at 12:20 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -71,18 +71,25 @@ CREATE TABLE `leidimai` (
   `Data` date NOT NULL,
   `fk_Administratorius` int(11) NOT NULL,
   `fk_Naikintojas` int(11) NOT NULL,
-  `fk_Vieta` int(11) NOT NULL
+  `fk_Vieta` int(11) NOT NULL,
+  `Sunaikinimo_data` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `leidimai`
 --
 
-INSERT INTO `leidimai` (`id_Leidimas`, `Data`, `fk_Administratorius`, `fk_Naikintojas`, `fk_Vieta`) VALUES
-(1, '2024-11-07', 3, 6, 6),
-(2, '2024-11-07', 3, 6, 5),
-(6, '2024-11-08', 3, 5, 6),
-(8, '2024-11-08', 3, 6, 8);
+INSERT INTO `leidimai` (`id_Leidimas`, `Data`, `fk_Administratorius`, `fk_Naikintojas`, `fk_Vieta`, `Sunaikinimo_data`) VALUES
+(1, '2024-11-07', 3, 6, 6, NULL),
+(2, '2024-11-07', 3, 6, 5, NULL),
+(6, '2024-11-08', 3, 5, 6, NULL),
+(8, '2024-11-08', 3, 6, 8, NULL),
+(10, '2024-11-13', 3, 10, 15, NULL),
+(11, '2024-11-13', 11, 5, 14, NULL),
+(12, '2024-11-13', 11, 6, 14, NULL),
+(21, '2024-11-13', 11, 6, 19, NULL),
+(22, '2024-11-13', 11, 5, 18, NULL),
+(23, '2024-11-13', 11, 6, 18, NULL);
 
 -- --------------------------------------------------------
 
@@ -108,7 +115,10 @@ INSERT INTO `naudotojai` (`id_Naudotojas`, `Vardas`, `Pavarde`, `El_pastas`, `Ti
 (5, 'Tadas', 'Atmazas', 'tadas@gmail.com', 'Naikintojas', '$2y$10$o0aOOc9h2wW9nJJnswa8b.ZcFkfW.Ylo/CGObIw6UWGcWWwZfu/Ky'),
 (6, 'Marius', 'Tabalius', 'marius@gmail.com', 'Naikintojas', '$2y$10$c43Z8k4eCAxjbrmy7FUP1OYDHnqIXNLIej0oQbWczHJ/390Y9vBBu'),
 (7, 'Tomas', 'Ramonas', 'tomas@gmail.com', 'Administratorius', '$2y$10$1IXPEwQyr6SBW1UNwHqtD.Dll/Q/uBEf/ZPKiVFzq5ktmQOrIPDwC'),
-(8, 'Rimas', 'Nurimes', 'rimas@gmail.com', 'Paprastas', '$2y$10$5IX0GeCuVxt6o9dsfNRQbOC5e7wT2rHnlQe/jQTr5/dXqS5VFpbHm');
+(8, 'Rimas', 'Nurimes', 'rimas@gmail.com', 'Paprastas', '$2y$10$5IX0GeCuVxt6o9dsfNRQbOC5e7wT2rHnlQe/jQTr5/dXqS5VFpbHm'),
+(9, 'Paprastas', 'Paprastas', 'paprastas@gmail.com', 'Paprastas', '$2y$10$tHxQgwp3ZMRVaSKe.Ehx2uLjkUvwDgdwUwnARvl0hPfLpStla1j1u'),
+(10, 'Naikintojas', 'Naikintojas', 'naikintojas@gmail.com', 'Naikintojas', '$2y$10$kVl8y7wIIqsDIorIfw9SH.gryEWN1ZKV9bT8QmPwCDxRhdcCdzBs2'),
+(11, 'Administratorius', 'administratorius', 'admin@gmail.com', 'Administratorius', '$2y$10$OZtDsKjBzDykGjZ29VGKmeHhIZyPodfCB4thXu.QwKfFTTvfjLKVO');
 
 -- --------------------------------------------------------
 
@@ -214,9 +224,12 @@ CREATE TABLE `vietos` (
 --
 
 INSERT INTO `vietos` (`id_Vieta`, `Sunaikinta`, `Kurimo_data`, `Naikinimo_data`, `Miestas_Kaimas`, `Gatve`, `Plotas`, `Nuotrauka`, `fk_Apskritis`, `fk_Savivaldybe`, `fk_Koordinate`, `fk_Savininkas`) VALUES
-(5, 0, '2024-11-06', NULL, 'Kaunas', 'ledos g. 34b', 8, NULL, 1, 2, NULL, 3),
-(6, 0, '2024-11-06', NULL, 'Kaunas', 'ledos g. 34b', 4, NULL, 2, 8, NULL, 3),
-(8, 0, '2024-11-07', NULL, 'Saulinciai', 'debesu', 5, '../uploads/SAS_grupiu_normalumo_tikrinimas.png', 5, 33, NULL, 6);
+(8, 0, '2024-11-07', NULL, 'Saulinciai', 'debesu', 5, '/uploads/sos1.jfif', 5, 33, NULL, 6),
+(12, 0, '2024-11-13', NULL, 'Birštonas', 'relakso', 8, '/uploads/sos3.jfif', 2, 5, NULL, 9),
+(13, 0, '2024-11-13', NULL, 'Šilalė', 'rasos', 9, '/uploads/sos4.jfif', 3, 47, NULL, 9),
+(14, 0, '2024-11-13', '2024-11-13', 'Kaunas', 'pieniu', 16, '/uploads/barstis.jpg', 2, 8, NULL, 9),
+(19, 0, '2024-11-13', NULL, 'g', 'g', 54, '/uploads/sos2.jfif', 6, 30, NULL, 10),
+(30, 0, '2024-11-13', NULL, 's', 's', 1, '/uploads/sos10.jfif', 2, 5, NULL, 3);
 
 --
 -- Indexes for dumped tables
@@ -285,13 +298,13 @@ ALTER TABLE `koordinates`
 -- AUTO_INCREMENT for table `leidimai`
 --
 ALTER TABLE `leidimai`
-  MODIFY `id_Leidimas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_Leidimas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `naudotojai`
 --
 ALTER TABLE `naudotojai`
-  MODIFY `id_Naudotojas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_Naudotojas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `savivaldybes`
@@ -303,7 +316,7 @@ ALTER TABLE `savivaldybes`
 -- AUTO_INCREMENT for table `vietos`
 --
 ALTER TABLE `vietos`
-  MODIFY `id_Vieta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_Vieta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- Constraints for dumped tables
