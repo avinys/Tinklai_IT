@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Naudotojų sąrašas</title>
-    <link rel="stylesheet" href="/styles/global.css"> <!-- Correct path to the CSS file -->
+    <link rel="stylesheet" href="/styles/global.css">
 </head>
 <body>
 
+<?php include '../views/alert.php'; ?>
 <?php include '../views/header.php'; ?>
 
 <main class="main-content container">

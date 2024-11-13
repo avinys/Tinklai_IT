@@ -8,6 +8,7 @@
 <body>
 
 <?php include '../views/header.php'; ?>
+<?php include '../views/alert.php'; ?>
 
 <main class="main-content container">
     <h2 class="mb-2 text-center">Visi Naikinimo Leidimai</h2>

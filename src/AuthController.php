@@ -29,10 +29,9 @@ class AuthController
             $stmt = $pdo->prepare("SELECT * FROM Naudotojai WHERE El_pastas = :email");
             $stmt->execute(['email' => $email]);
             if ($stmt->rowCount() > 0) {
-                echo "<script>
-                        alert('Paskyra su tokiu el. paštu jau egzistuoja.');
-                        window.location.href = 'index.php?page=register';
-                      </script>";
+                $_SESSION['alert_message'] = "Paskyra su tokiu el. paštu jau egzistuoja.";
+                $_SESSION['alert_type'] = "error";
+                header("Location: index.php?page=register");
                 exit;
             }
 
@@ -42,15 +41,15 @@ class AuthController
             // Insert user data into the database
             $stmt = $pdo->prepare("INSERT INTO naudotojai (Vardas, Pavarde, El_pastas, Slaptazodis, Tipas) VALUES (:name, :surname, :email, :password, :type)");
             if ($stmt->execute(['name' => $name, 'surname' => $surname, 'email' => $email, 'password' => $hashedPassword, 'type' => $userType])) {
-                echo "<script>
-                        alert('Registracija sėkminga. Paspauskite OK ir būsite perkelti į prisijungimo puslapį.');
-                        window.location.href = 'index.php?page=login';
-                      </script>";
+                $_SESSION['alert_message'] = "Registracija sėkminga!";
+                $_SESSION['alert_type'] = "success";
+                header("Location: index.php?page=login");
+                exit;
             } else {
-                echo "<script>
-                        alert('Kažkas ne taip. Bandykite dar kartą.');
-                        window.location.href = 'index.php?page=register';
-                      </script>";
+                $_SESSION['alert_message'] = "Įvyko klaida. Prašome bandyti dar kartą.";
+                $_SESSION['alert_type'] = "error";
+                header("Location: index.php?page=register");
+                exit;
             }
         }
     }
@@ -93,5 +92,4 @@ class AuthController
         header("Location: index.php?page=home");
         exit();
     }
-
 }

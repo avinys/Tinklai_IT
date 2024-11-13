@@ -23,4 +23,7 @@ switch ($page) {
             $uploadController->processEdit($_GET['id']);
         }
         break;
+    case 'delete-upload':
+        $uploadController->deleteUpload($_GET['id']);
+        break;
 }

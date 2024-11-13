@@ -4,11 +4,15 @@ require_once '../src/helpers.php';
 
 class UsersController
 {
-    public function viewUsers()
+    public function __construct()
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
+    }
+
+    public function viewUsers()
+    {
         $pdo = getDatabaseConnection();
         
         // Get filter type from query parameter
@@ -39,7 +43,14 @@ class UsersController
     {
         $pdo = getDatabaseConnection();
         $stmt = $pdo->prepare("DELETE FROM Naudotojai WHERE id_Naudotojas = :id");
-        $stmt->execute(['id' => $id]);
+
+        if ($stmt->execute(['id' => $id])) {
+            $_SESSION['alert_message'] = "Naudotojas sėkmingai ištrintas!";
+            $_SESSION['alert_type'] = "success";
+        } else {
+            $_SESSION['alert_message'] = "Įvyko klaida trinant naudotoją. Prašome bandyti dar kartą.";
+            $_SESSION['alert_type'] = "error";
+        }
 
         // Redirect to the users list after deletion
         header("Location: index.php?page=view-users");
@@ -61,9 +72,16 @@ class UsersController
         $type = sanitize($_POST['type']);
         $pdo = getDatabaseConnection();
         $stmt = $pdo->prepare("UPDATE Naudotojai SET Tipas = :type WHERE id_Naudotojas = :id");
-        $stmt->execute(['id' => $id, 'type' => $type]);
+       
 
-        // Redirect to the users list after updating
+        if ( $stmt->execute(['id' => $id, 'type' => $type])) {
+            $_SESSION['alert_message'] = "Naudotojo rolė sėkmingai atnaujinta!";
+            $_SESSION['alert_type'] = "success";
+        } else {
+            $_SESSION['alert_message'] = "Įvyko klaida atnaujinant naudotojo rolę. Prašome bandyti dar kartą.";
+            $_SESSION['alert_type'] = "error";
+        }
+
         header("Location: index.php?page=view-users");
         exit();
     }

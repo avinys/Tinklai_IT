@@ -11,7 +11,7 @@ if (in_array($page, ['login', 'register', 'process-login', 'process-register', '
     require '../routes/authRoutes.php';
 } elseif (in_array($page, ['view-users', 'delete-user', 'edit-user'])) {
     require '../routes/userRoutes.php';
-}elseif(in_array($page, ['upload', 'fetch-municipalities', 'process-upload', 'view-uploads', 'edit-upload', 'process-edit-upload'])) {
+}elseif(in_array($page, ['upload', 'fetch-municipalities', 'process-upload', 'view-uploads', 'edit-upload', 'process-edit-upload', 'delete-upload'])) {
     require '../routes/uploadRoutes.php';
 } elseif(in_array($page, ['assign-permits', 'view-permits', 'delete-permit', 'view-assigned-permits', 'complete-eradication', 'submit-eradication'])){ 
     require '../routes/eradicationRoutes.php';

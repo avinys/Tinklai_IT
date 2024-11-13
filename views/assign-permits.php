@@ -31,6 +31,7 @@
 <body>
 
     <?php include '../views/header.php'; ?>
+    <?php include '../views/alert.php'; ?>
 
     <main class="main-content container text-center">
         <h2 class="mb-3">Priskirti Naikinimo Leidimus</h2>

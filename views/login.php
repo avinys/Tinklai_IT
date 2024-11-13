@@ -11,7 +11,11 @@
 <body>
 
     <?php
-    include '../views/header.php'; // Include the header file
+    include '../views/header.php';
+    ?>
+
+    <?php
+    include '../views/alert.php';
     ?>
 
     <main class="main-content container text-center">

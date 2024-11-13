@@ -49,9 +49,10 @@ class UploadController
     
             // File upload
             $photo = $_FILES['photo'];
-            $uploadDir = '../uploads/';
-            $photoPath = $uploadDir . basename($photo['name']);
-            move_uploaded_file($photo['tmp_name'], $photoPath);
+            $uploadDir = '../public/uploads/';
+            $photoPath = "/uploads/" . basename($photo['name']);
+            move_uploaded_file($photo['tmp_name'], $uploadDir . basename($photo['name']));
+            print_r($photoPath);
     
             // Extract metadata (coordinates) if available
             $coordinates = $this->getCoordinatesFromMetadata($photoPath);
@@ -76,19 +77,19 @@ class UploadController
             // Insert location data into the 'vieta' table, including the photo path
             $stmt = $pdo->prepare("INSERT INTO vietos (Miestas_Kaimas, Gatve, Plotas, fk_Apskritis, fk_Savivaldybe, fk_Koordinate, fk_Savininkas, Sunaikinta, Kurimo_data, Nuotrauka) 
                                    VALUES (:city, :street, :area, :region, :municipality, :coordinate, :owner, 0, NOW(), :photoPath)");
-            $stmt->execute([
-                'city' => $city,
-                'street' => $street,
-                'area' => $area,
-                'region' => $region,
-                'municipality' => $municipality,
-                'coordinate' => $coordinateId,
-                'owner' => $_SESSION['user_id'],
-                'photoPath' => $photoPath
-            ]);
-    
-            header('Location: index.php?page=home');
-            exit();
+
+            if ($stmt->execute(['city' => $city, 'street' => $street, 'area' => $area,'region' => $region,'municipality' => $municipality,
+                'coordinate' => $coordinateId, 'owner' => $_SESSION['user_id'],  'photoPath' => $photoPath])) {
+                $_SESSION['alert_message'] = "Vieta pažymėta sėkmingai!";
+                $_SESSION['alert_type'] = "success";
+                header("Location: index.php?page=view-uploads");
+                exit;
+            } else {
+                $_SESSION['alert_message'] = "Įvyko klaida. Prašome bandyti dar kartą.";
+                $_SESSION['alert_type'] = "error";
+                header("Location: index.php?page=view-uploads");
+                exit;
+            }
         }
     }
     
@@ -96,13 +97,28 @@ class UploadController
     private function getCoordinatesFromMetadata($photoPath)
     {
         if (!function_exists('exif_read_data')) {
+            $_SESSION['alert_message'] = "Nerandama funkcija!";
+            $_SESSION['alert_type'] = "error";
+            header("Location: index.php?page=view-uploads");
+            exit;
             return null;
         }
 
-        $exif = exif_read_data($photoPath);
+        $exif = exif_read_data("../public" . $photoPath);
+
+        if (!isset($exif['GPSLatitude'], $exif['GPSLongitude']) || !$exif) {
+            $_SESSION['alert_message'] = "Nerandami metaduomenu!";
+            $_SESSION['alert_type'] = "error";
+            header("Location: index.php?page=home");
+        }
+
         if ($exif && isset($exif['GPSLatitude'], $exif['GPSLongitude'])) {
             $latitude = $this->convertGps($exif['GPSLatitude'], $exif['GPSLatitudeRef']);
             $longitude = $this->convertGps($exif['GPSLongitude'], $exif['GPSLongitudeRef']);
+            $_SESSION['alert_message'] = $latitude . "   " . $longitude;
+            $_SESSION['alert_type'] = "error";
+            header("Location: index.php?page=home");
+            exit;
             return ['latitude' => $latitude, 'longitude' => $longitude];
         }
 
@@ -138,12 +154,23 @@ class UploadController
         // Prepare SQL based on user role
         if ($userRole === 'Administratorius') {
             // Admin can see all uploads
-            $stmt = $pdo->prepare("SELECT * FROM vietos");
+            $stmt = $pdo->prepare("
+            SELECT DISTINCT v.*,
+            apskritys.Pavadinimas AS apskritis,
+            savivaldybes.Pavadinimas AS savivaldybe,
+            koordinates.Platuma AS platuma,
+            koordinates.Ilguma AS ilguma
+            FROM vietos v
+            LEFT JOIN leidimai l ON v.id_Vieta = l.fk_Vieta
+            JOIN savivaldybes ON v.fk_Savivaldybe = savivaldybes.id_Savivaldybe
+            JOIN apskritys ON v.fk_Apskritis = apskritys.id_Apskritis
+            LEFT JOIN koordinates ON v.fk_Koordinate = koordinates.id_Koordinate
+        ");
             $stmt->execute();
         } elseif ($userRole === 'Naikintojas') {
             // Destroyer can see own uploads and those assigned to them
             $stmt = $pdo->prepare("
-            SELECT v.*,
+            SELECT DISTINCT v.*,
             apskritys.Pavadinimas AS apskritis,
             savivaldybes.Pavadinimas AS savivaldybe,
             koordinates.Platuma AS platuma,
@@ -158,11 +185,30 @@ class UploadController
             $stmt->execute(['userId' => $userId]);
         } else {
             // Regular users can only see their own uploads
-            $stmt = $pdo->prepare("SELECT * FROM vietos WHERE fk_Savininkas = :userId");
+            $stmt = $pdo->prepare("
+            SELECT DISTINCT v.*,
+            v.Nuotrauka AS Nuotrauka,
+            apskritys.Pavadinimas AS apskritis,
+            savivaldybes.Pavadinimas AS savivaldybe,
+            koordinates.Platuma AS platuma,
+            koordinates.Ilguma AS ilguma
+            FROM vietos v
+            LEFT JOIN leidimai l ON v.id_Vieta = l.fk_Vieta
+            JOIN savivaldybes ON v.fk_Savivaldybe = savivaldybes.id_Savivaldybe
+            JOIN apskritys ON v.fk_Apskritis = apskritys.id_Apskritis
+            LEFT JOIN koordinates ON v.fk_Koordinate = koordinates.id_Koordinate
+            WHERE v.fk_Savininkas = :userId
+        ");
             $stmt->execute(['userId' => $userId]);
         }
 
         $uploads = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($uploads as &$upload) {
+            $upload['owner'] = ($upload['fk_Savininkas'] == $_SESSION['user_id']) || $_SESSION['role'] == "Administratorius";
+        }
+        
+        // Unset the reference to avoid potential issues
+        unset($upload);
         include '../views/view-uploads.php';
     }
     public function showEditForm($uploadId)
@@ -195,16 +241,28 @@ class UploadController
     public function processEdit($uploadId)
     {
         $pdo = getDatabaseConnection();
-
+    
+        // Fetch the existing photo path from the database
+        $stmt = $pdo->prepare("SELECT Nuotrauka FROM vietos WHERE id_Vieta = :id");
+        $stmt->execute(['id' => $uploadId]);
+        $existingPhoto = $stmt->fetchColumn();
+    
         // Handle file upload if a new file is provided
         $photoPath = null;
         if (!empty($_FILES['photo']['name'])) {
             $photo = $_FILES['photo'];
-            $uploadDir = '../uploads/';
-            $photoPath = $uploadDir . basename($photo['name']);
-            move_uploaded_file($photo['tmp_name'], $photoPath);
+            $uploadDir = '../public/uploads/';
+            $photoPath = "/uploads/" . basename($photo['name']); // Corrected path format
+    
+            // Remove the existing photo file if it exists
+            if ($existingPhoto && file_exists("../public" . $existingPhoto)) {
+                unlink("../public" . $existingPhoto);
+            }
+    
+            // Move the new uploaded file to the uploads directory
+            move_uploaded_file($photo['tmp_name'], $uploadDir . basename($photo['name']));
         }
-
+    
         // Prepare the data to update
         $data = [
             'city' => sanitize($_POST['city']),
@@ -214,18 +272,59 @@ class UploadController
             'municipality' => (int)$_POST['municipality'],
             'id' => $uploadId
         ];
-
+    
         // Update query with photo if updated
         if ($photoPath) {
             $data['photo'] = $photoPath;
-            $stmt = $pdo->prepare("UPDATE vietos SET Miestas_Kaimas = :city, Gatve = :street, Plotas = :area, fk_Apskritis = :region, fk_Savivaldybe = :municipality, photo = :photo WHERE id_Vieta = :id");
+            $stmt = $pdo->prepare("UPDATE vietos SET Miestas_Kaimas = :city, Gatve = :street, Plotas = :area, fk_Apskritis = :region, fk_Savivaldybe = :municipality, Nuotrauka = :photo WHERE id_Vieta = :id");
         } else {
             $stmt = $pdo->prepare("UPDATE vietos SET Miestas_Kaimas = :city, Gatve = :street, Plotas = :area, fk_Apskritis = :region, fk_Savivaldybe = :municipality WHERE id_Vieta = :id");
         }
-
-        $stmt->execute($data);
-
-        header("Location: index.php?page=view-uploads");
-        exit();
+    
+        if ($stmt->execute($data)) {
+            $_SESSION['alert_message'] = "Vieta redaguota sėkmingai!";
+            $_SESSION['alert_type'] = "success";
+            header("Location: index.php?page=view-uploads");
+            exit;
+        } else {
+            $_SESSION['alert_message'] = "Įvyko klaida. Prašome bandyti dar kartą.";
+            $_SESSION['alert_type'] = "error";
+            header("Location: index.php?page=view-uploads");
+            exit;
+        }
     }
+    
+    public function deleteUpload($uploadId) {
+        $pdo = getDatabaseConnection();
+    
+        // Retrieve the file path from the database
+        $stmt = $pdo->prepare("SELECT Nuotrauka FROM vietos WHERE id_Vieta = :id");
+        $stmt->execute(['id' => $uploadId]);
+        $photoPath = $stmt->fetchColumn();
+    
+        if ($photoPath) {
+            // Construct the full file path on the server
+            $fullPath = __DIR__ . '/../public' . $photoPath;
+    
+            // Check if the file exists and delete it
+            if (file_exists($fullPath)) {
+                unlink($fullPath);
+            }
+        }
+    
+        // Delete the database record
+        $stmt = $pdo->prepare("DELETE FROM vietos WHERE id_Vieta = :id");
+        if ($stmt->execute(['id' => $uploadId])) {
+            $_SESSION['alert_message'] = "Įrašas sėkmingai ištrintas!";
+            $_SESSION['alert_type'] = "success";
+        } else {
+            $_SESSION['alert_message'] = "Įvyko klaida trinant įrašą. Prašome bandyti dar kartą.";
+            $_SESSION['alert_type'] = "error";
+        }
+    
+        // Redirect back to the uploads view page
+        header("Location: index.php?page=view-uploads");
+        exit;
+    }
+    
 }

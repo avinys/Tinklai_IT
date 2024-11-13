@@ -8,6 +8,7 @@
 <body>
 
 <?php include '../views/header.php'; ?>
+<?php include '../views/alert.php'; ?>
 
 <main class="main-content container" style="min-width:1000px;">
     <h2 class="mb-2 text-center">Priskirti Leidimai</h2>
@@ -46,7 +47,7 @@
                         <?php if (!empty($place['latitude']) && !empty($place['longitude'])): ?>
                             <?= htmlspecialchars($place['latitude']) ?>, <?= htmlspecialchars($place['longitude']) ?>
                         <?php else: ?>
-                            Koordinaciu istraukti nepavyko
+                            Koordinačių ištraukti nepavyko
                         <?php endif; ?>
                     </td>
 

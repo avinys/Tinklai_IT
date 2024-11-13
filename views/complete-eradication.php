@@ -58,6 +58,7 @@
 
     <form action="index.php?page=submit-eradication" method="POST">
         <input type="hidden" name="permit_id" value="<?= htmlspecialchars($permit['permit_id']) ?>">
+        <input type="hidden" name="place_id" value="<?= htmlspecialchars($permit['place_id']) ?>">
         <div class="form-group mb-3">
             <label for="eradication_date">Naikinimo Data:</label>
             <input type="date" id="eradication_date" name="eradication_date" class="form-input" required>

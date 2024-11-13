@@ -51,14 +51,18 @@ class EradicationController
         // Delete the permit from the database
         $pdo = getDatabaseConnection();
         $stmt = $pdo->prepare("DELETE FROM leidimai WHERE id_Leidimas = :permit_id");
-        $stmt->execute(['permit_id' => $permitId]);
 
-        // Redirect back to the view permits page with a success message
-        header("Location: index.php?page=view-permits&status=deleted");
+        if ($stmt->execute(['permit_id' => $permitId])) {
+            $_SESSION['alert_message'] = "Naikinimo leidimas ištrintas sėkmingai!";
+            $_SESSION['alert_type'] = "success";
+        } else {
+            $_SESSION['alert_message'] = "Įvyko klaida. Prašome bandyti dar kartą.";
+            $_SESSION['alert_type'] = "error";
+        }
+
+        header("Location: index.php?page=view-permits");
         exit();
     }
-
-
 
     public function populatePermitForm()
     {
@@ -93,13 +97,18 @@ class EradicationController
 
         // Validate selections
         if (empty($selectedPlaces) || empty($selectedEradicators)) {
-            echo "<script>alert('Prašome pasirinkti bent vieną vietą ir bent vieną naikintoją.'); window.history.back();</script>";
+            $_SESSION['alert_message'] = "Prašome pasirinkti bent vieną naikintoją ir bent vieną vietą!";
+            $_SESSION['alert_type'] = "error";
+            header("Location: index.php?page=assign-permits");
+            exit();
             return;
         }
 
         $pdo = getDatabaseConnection();
         $checkStmt = $pdo->prepare("SELECT COUNT(*) FROM leidimai WHERE fk_Administratorius = :admin_id AND fk_Naikintojas = :eradicator_id AND fk_Vieta = :place_id");
         $insertStmt = $pdo->prepare("INSERT INTO leidimai (Data, fk_Administratorius, fk_Naikintojas, fk_Vieta) VALUES (NOW(), :admin_id, :eradicator_id, :place_id)");
+
+        $c = 0;
 
         foreach ($selectedPlaces as $placeId) {
             foreach ($selectedEradicators as $eradicatorId) {
@@ -110,18 +119,32 @@ class EradicationController
                     'place_id' => $placeId
                 ]);
 
-                if ($checkStmt->fetchColumn() == 0) { // No duplicate found
+                if ($checkStmt->fetchColumn() == 0) {
                     // Insert the new permit
                     $insertStmt->execute([
                         'admin_id' => $_SESSION['user_id'],
                         'eradicator_id' => $eradicatorId,
                         'place_id' => $placeId
                     ]);
+                    $c += 1;
                 }
             }
         }
 
-        header("Location: index.php?page=home");
+        if ($c == 0) {
+            $_SESSION['alert_message'] = "Nebuvo sukurta naikinimo leidimų.";
+            $_SESSION['alert_type'] = "error";
+            header("Location: index.php?page=view-permits");
+            exit();
+        } elseif ($c == 1) {
+            $_SESSION['alert_message'] = "Naikinimo leidimas sukurtas sėkmingai!";
+        }else {
+            $_SESSION['alert_message'] = "Naikinimo leidimai sukurti sėkmingai!";
+        }
+        
+        $_SESSION['alert_type'] = "success";
+
+        header("Location: index.php?page=view-permits");
         exit();
     }
 
@@ -186,6 +209,7 @@ class EradicationController
                 leidimai.Data AS date,
                 apskritys.Pavadinimas AS region,
                 savivaldybes.Pavadinimas AS municipality,
+                vietos.id_Vieta AS place_id,
                 vietos.Miestas_Kaimas AS city,
                 vietos.Gatve AS street,
                 vietos.Plotas AS area,
@@ -221,6 +245,7 @@ class EradicationController
     
         // Get permit ID and eradication data from request
         $permitId = $_POST['permit_id'] ?? null;
+        $placeId = $_POST['place_id'] ?? null;
         $eradicationDate = $_POST['eradication_date'] ?? null;
         $useCurrentDate = isset($_POST['use_current_date']);
     
@@ -243,17 +268,27 @@ class EradicationController
         $stmt = $pdo->prepare("
             UPDATE leidimai
             SET Sunaikinimo_data = :eradicationDate
-            WHERE id_Leidimas = :permitId AND fk_Naikintojas = :eradicatorId
+            WHERE id_Leidimas = :permitId AND fk_Naikintojas = :eradicatorId;
+
+            UPDATE vietos 
+            SET Naikinimo_data = :eradicationDate
+            WHERE id_Vieta = :placeId;
         ");
         $stmt->bindParam(':eradicationDate', $eradicationDate);
         $stmt->bindParam(':permitId', $permitId, PDO::PARAM_INT);
         $stmt->bindParam(':eradicatorId', $_SESSION['user_id'], PDO::PARAM_INT);
+        $stmt->bindParam(':placeId', $placeId, PDO::PARAM_INT);
     
         if ($stmt->execute()) {
-            header("Location: index.php?page=view-assigned-permits&message=Naikinimas ");
+            $_SESSION['alert_message'] = "Naikinimo atlikimas įrašytas!";
+            $_SESSION['alert_type'] = "success";
         } else {
-            header("Location: index.php?page=error&message=Failed to Process Eradication");
+            $_SESSION['alert_message'] = "Įvyko klaida įrašant naikinimo atlikimą. Prašome bandyti dar kartą.";
+            $_SESSION['alert_type'] = "error";
         }
+        
+        header("Location: index.php?page=view-assigned-permits");
+        exit();
     }
     
     
