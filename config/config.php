@@ -1,8 +1,8 @@
 <?php
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'tinklaiit');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_USER', 'stud');
+define('DB_PASS', 'stud');
 
 define('BASE_URL', 'http://localhost/projektas'); // PAKEISTI PRIES LEIDZIANT VM
 
