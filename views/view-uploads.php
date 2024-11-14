@@ -47,7 +47,7 @@
                             <?php endif; ?>
                         </td>
                         <td><?= htmlspecialchars($upload['Kurimo_data']) ?></td>
-                        <td style="display: flex; flex-direction: column;">
+                        <td style="display: flex; flex-direction: column; height: 100%;">
                             <?php if ($upload['Naikinimo_data'] === null): ?>
                                 <a href="index.php?page=edit-upload&id=<?= htmlspecialchars($upload['id_Vieta']) ?>" class="button">Redaguoti</a>
                             <?php else: ?>
