@@ -39,7 +39,7 @@
                     <td><?= htmlspecialchars($place['area']) ?> m²</td>
                     <td style="padding: 0; text-align: center;">
                         <?php if (!empty($place['photoPath'])): ?>
-                            <img src="<?= htmlspecialchars($place['photoPath']) ?>" alt="Nuotrauka" width="100">
+                            <img src="../public<?= htmlspecialchars($place['photoPath']) ?>" alt="Nuotrauka" width="100">
                         <?php else: ?>
                             Nėra nuotraukos
                         <?php endif; ?>
