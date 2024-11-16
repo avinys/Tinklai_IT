@@ -45,11 +45,11 @@
                         <?php endif; ?>
                     </td>
                     <td>
-                        <?php if (!empty($place['latitude']) && !empty($place['longitude'])): ?>
-                            <?= htmlspecialchars($place['latitude']) ?>, <?= htmlspecialchars($place['longitude']) ?>
-                        <?php else: ?>
-                            Koordinačių ištraukti nepavyko
-                        <?php endif; ?>
+                    <?php if (!empty($upload['platuma']) && !empty($upload['ilguma'])): ?>
+                                <?= htmlspecialchars($upload['platuma']) ?>, <?= htmlspecialchars($upload['ilguma']) ?>
+                            <?php else: ?>
+                                Koordinačių ištraukti nepavyko
+                            <?php endif; ?>
                     </td>
 
                     <td>
