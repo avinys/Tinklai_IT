@@ -55,6 +55,9 @@
 
                         <td>
                             <a href="index.php?page=complete-eradication&id=<?= htmlspecialchars($place['permit_id']) ?>" class="button">Naikinti</a>
+                            <?php if (!empty($place['platuma']) && !empty($place['ilguma'])) { ?>
+                                <a href="index.php?page=view-map&from=view-uploads&id=<?= htmlspecialchars($place['id_Vieta']) ?>" class="button">Peržiūrėti žemėlapyje</a>
+                            <?php } ?>
                         </td>
                         <!-- <form action="index.php?page=complete-eradication&id=<?= htmlspecialchars($place['permit_id']) ?>" method="POST">
                             <button type="submit" onclick="">Naikinti</button>
