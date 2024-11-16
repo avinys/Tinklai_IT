@@ -19,7 +19,7 @@
             <p class="text-center">Nėra įkeltų vietų.</p>
         <?php else: ?>
             <table class="table">
-                <tr>
+                <tr >
                     <th>Nuotrauka</th>
                     <th>Miesto/Kaimo pavadinimas</th>
                     <th>Gatvė</th>
@@ -40,14 +40,15 @@
                         <td><?= htmlspecialchars($upload['savivaldybe']) ?></td>
                         <!-- <td><?= htmlspecialchars($upload['fk_Koordinate']) ?></td> -->
                         <td>
-                            <?php if (!empty($place['latitude']) && !empty($place['longitude'])): ?>
-                                <?= htmlspecialchars($place['latitude']) ?>, <?= htmlspecialchars($place['longitude']) ?>
+                            <?php if (!empty($upload['platuma']) && !empty($upload['ilguma'])): ?>
+                                <?= htmlspecialchars($upload['platuma']) ?>, <?= htmlspecialchars($upload['ilguma']) ?>
                             <?php else: ?>
                                 Koordinačių ištraukti nepavyko
                             <?php endif; ?>
                         </td>
                         <td><?= htmlspecialchars($upload['Kurimo_data']) ?></td>
-                        <td style="display: flex; flex-direction: column;">
+                        <td>
+                            <div  style="display: flex; flex-direction: column;">
                             <?php if ($upload['Naikinimo_data'] === null): ?>
                                 <a href="index.php?page=edit-upload&id=<?= htmlspecialchars($upload['id_Vieta']) ?>" class="button">Redaguoti</a>
                             <?php else: ?>
@@ -57,6 +58,7 @@
                             <?php if ($upload['owner'] == true): ?>
                                 <a href="index.php?page=delete-upload&id=<?= htmlspecialchars($upload['id_Vieta']) ?>" class="button-alt" style="margin-top:10px;" onclick=" return confirm('Ar tikrai norite ištrinti šią vietą?');">Ištrinti</a>
                             <?php endif; ?>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>

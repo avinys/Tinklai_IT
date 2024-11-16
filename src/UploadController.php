@@ -97,7 +97,7 @@ class UploadController
     private function getCoordinatesFromMetadata($photoPath)
     {
         if (!function_exists('exif_read_data')) {
-            $_SESSION['alert_message'] = "Nerandama funkcija!";
+            $_SESSION['alert_message'] = "Nerandama funkcija exif_read_data!";
             $_SESSION['alert_type'] = "error";
             header("Location: index.php?page=view-uploads");
             exit;
@@ -107,7 +107,7 @@ class UploadController
         $exif = exif_read_data("../public" . $photoPath);
 
         if (!isset($exif['GPSLatitude'], $exif['GPSLongitude']) || !$exif) {
-            $_SESSION['alert_message'] = "Nerandami metaduomenu!";
+            $_SESSION['alert_message'] = "Nerandami GPS metaduomenys!";
             $_SESSION['alert_type'] = "error";
             header("Location: index.php?page=home");
         }
@@ -115,10 +115,10 @@ class UploadController
         if ($exif && isset($exif['GPSLatitude'], $exif['GPSLongitude'])) {
             $latitude = $this->convertGps($exif['GPSLatitude'], $exif['GPSLatitudeRef']);
             $longitude = $this->convertGps($exif['GPSLongitude'], $exif['GPSLongitudeRef']);
-            $_SESSION['alert_message'] = $latitude . "   " . $longitude;
-            $_SESSION['alert_type'] = "error";
-            header("Location: index.php?page=home");
-            exit;
+            $_SESSION['alert_message'] = "Sėkmingai rastos koordinatės: " . $latitude . " " . $longitude;
+            $_SESSION['alert_type'] = "success";
+            // header("Location: index.php?page=home");
+            // exit;
             return ['latitude' => $latitude, 'longitude' => $longitude];
         }
 
