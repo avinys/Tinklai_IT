@@ -12,7 +12,7 @@
        * element that contains the map. */
         gmp-map {
             height: 90%;
-            margin-bottom:10%;
+            margin-bottom:2%;
         }
     </style>
 </head>

@@ -44,8 +44,8 @@ $userType = $_SESSION['role'] ?? ''; // "Paprastas", "Naikintojas" arba "Adminis
             <section>
                 <h3 class="mb-2">Papildomos funkcijos</h3>
                 <ul>
-                    <li>Automatiškai ištraukite GPS koordinates iš nuotraukos meta duomenų (jei jos yra). X</li>
-                    <li>Peržiūrėkite vietoves žemėlapyje arba istorijos registre. X</li>
+                    <li>Automatiškai ištraukite GPS koordinates iš nuotraukos meta duomenų (jei jos yra).</li>
+                    <li>Peržiūrėkite vietoves žemėlapyje arba istorijos registre.</li>
                 </ul>
             </section>
         <?php else: ?>
