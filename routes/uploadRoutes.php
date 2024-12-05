@@ -26,4 +26,7 @@ switch ($page) {
     case 'delete-upload':
         $uploadController->deleteUpload($_GET['id']);
         break;
+    case 'view-map':
+        $uploadController->viewMap($_GET['id'], $_GET['from']);
+        break;
 }

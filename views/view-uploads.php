@@ -20,7 +20,7 @@
             <p class="text-center">Nėra įkeltų vietų.</p>
         <?php else: ?>
             <table class="table">
-                <tr>
+                <tr >
                     <th>Nuotrauka</th>
                     <th>Miesto/Kaimo pavadinimas</th>
                     <th>Gatvė</th>
@@ -52,6 +52,9 @@
                             <div style="display: flex; flex-direction: column;">
                             <?php if ($upload['Naikinimo_data'] === null): ?>
                                 <a href="index.php?page=edit-upload&id=<?= htmlspecialchars($upload['id_Vieta']) ?>" class="button">Redaguoti</a>
+                                <?php if(!empty($upload['platuma']) && !empty($upload['ilguma'])) { ?>
+                                    <a href="index.php?page=view-map&from=view-uploads&id=<?= htmlspecialchars($upload['id_Vieta']) ?>" class="button">Peržiūrėti žemėlapyje</a>
+                                <?php } ?>
                             <?php else: ?>
                                 <a class="button" style="color: #999; pointer-events: none; background-color: #e0e0e0;">Panaikinta</a>
                             <?php endif; ?>

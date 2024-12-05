@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="lt">
+
 <head>
     <meta charset="UTF-8">
     <title>Priskirti Leidimai</title>
     <!-- <link rel="stylesheet" href="../styles/global.css"> -->
     <link rel="stylesheet" href="../public/styles/global.css">
 </head>
+
 <body>
 
-<?php include '../views/header.php'; ?>
-<?php include '../views/alert.php'; ?>
+    <?php include '../views/header.php'; ?>
+    <?php include '../views/alert.php'; ?>
 
-<main class="main-content container" style="min-width:1000px;">
-    <h2 class="mb-2 text-center">Priskirti Leidimai</h2>
+    <main class="main-content container" style="min-width:1000px;">
+        <h2 class="mb-2 text-center">Priskirti Leidimai</h2>
 
     <table class="table">
         <thead>
@@ -45,28 +47,32 @@
                         <?php endif; ?>
                     </td>
                     <td>
-                    <?php if (!empty($upload['platuma']) && !empty($upload['ilguma'])): ?>
-                                <?= htmlspecialchars($upload['platuma']) ?>, <?= htmlspecialchars($upload['ilguma']) ?>
-                            <?php else: ?>
-                                Koordinačių ištraukti nepavyko
-                            <?php endif; ?>
+                        <?php if (!empty($place['latitude']) && !empty($place['longitude'])): ?>
+                            <?= htmlspecialchars($place['latitude']) ?>, <?= htmlspecialchars($place['longitude']) ?>
+                        <?php else: ?>
+                            Koordinačių ištraukti nepavyko
+                        <?php endif; ?>
                     </td>
 
-                    <td>
-                        <a href="index.php?page=complete-eradication&id=<?= htmlspecialchars($place['permit_id']) ?>" class="button">Naikinti</a>
-                    </td>
+                        <td>
+                            <a href="index.php?page=complete-eradication&id=<?= htmlspecialchars($place['permit_id']) ?>" class="button">Naikinti</a>
+                            <?php if (!empty($place['platuma']) && !empty($place['ilguma'])) { ?>
+                                <a href="index.php?page=view-map&from=view-uploads&id=<?= htmlspecialchars($place['id_Vieta']) ?>" class="button">Peržiūrėti žemėlapyje</a>
+                            <?php } ?>
+                        </td>
                         <!-- <form action="index.php?page=complete-eradication&id=<?= htmlspecialchars($place['permit_id']) ?>" method="POST">
                             <button type="submit" onclick="">Naikinti</button>
                         </form> -->
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</main>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </main>
 
-<footer class="footer">
-    <p>&copy; 2024 Sosnovskio Barščių Registravimo Sistema. Autorius: Arvydas Vingis</p>
-</footer>
+    <footer class="footer">
+        <p>&copy; 2024 Sosnovskio Barščių Registravimo Sistema. Autorius: Arvydas Vingis</p>
+    </footer>
 
 </body>
+
 </html>

@@ -9,6 +9,11 @@ class UsersController
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
+
+        if ($_SESSION["user_id"] != "Administratorius") {
+            header("Location: index.php?page=unauthorized");
+            exit();
+        }
     }
 
     public function viewUsers()
