@@ -33,7 +33,7 @@
                 </tr>
                 <?php foreach ($uploads as $upload): ?>
                     <tr>
-                        <td style="padding: 0; max-height:150px; max-width: 150px;"><img style="height: 100%; width: 100%;" src="../public<?= htmlspecialchars($upload['Nuotrauka']) ?>" alt="Nuotrauka" width="100" /></td>
+                        <td style="padding: 0; max-height:150px; max-width: 150px;"><img style="height: 100%; width: 100%; object-fit: contain;" src="../public<?= htmlspecialchars($upload['Nuotrauka']) ?>" alt="Nuotrauka" width="100" /></td>
                         <td><?= htmlspecialchars($upload['Miestas_Kaimas']) ?></td>
                         <td><?= htmlspecialchars($upload['Gatve']) ?></td>
                         <td><?= htmlspecialchars($upload['Plotas']) ?></td>
