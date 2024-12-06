@@ -25,16 +25,16 @@ class UsersController
 
         // Prepare the query based on the filter type
         if ($type === 'Naikintojas') {
-            $stmt = $pdo->prepare("SELECT * FROM Naudotojai WHERE Tipas = 'Naikintojas'");
+            $stmt = $pdo->prepare("SELECT * FROM naudotojai WHERE Tipas = 'Naikintojas'");
             $stmt->execute();
         } elseif ($type === 'Paprastas') {
-            $stmt = $pdo->prepare("SELECT * FROM Naudotojai WHERE Tipas = 'Paprastas'");
+            $stmt = $pdo->prepare("SELECT * FROM naudotojai WHERE Tipas = 'Paprastas'");
             $stmt->execute();
         } elseif($type === 'Administratorius'){
-            $stmt = $pdo->prepare("SELECT * FROM Naudotojai WHERE Tipas = 'Administratorius' AND id_Naudotojas != :id");
+            $stmt = $pdo->prepare("SELECT * FROM naudotojai WHERE Tipas = 'Administratorius' AND id_Naudotojas != :id");
             $stmt->execute(['id' => $_SESSION['user_id']]);
         } else {
-            $stmt = $pdo->prepare("SELECT * FROM Naudotojai WHERE id_Naudotojas != :id");
+            $stmt = $pdo->prepare("SELECT * FROM naudotojai WHERE id_Naudotojas != :id");
             $stmt->execute(['id' => $_SESSION['user_id']]);
         }
 
@@ -77,7 +77,7 @@ class UsersController
     {
         $type = sanitize($_POST['type']);
         $pdo = getDatabaseConnection();
-        $stmt = $pdo->prepare("UPDATE Naudotojai SET Tipas = :type WHERE id_Naudotojas = :id");
+        $stmt = $pdo->prepare("UPDATE naudotojai SET Tipas = :type WHERE id_Naudotojas = :id");
        
 
         if ( $stmt->execute(['id' => $id, 'type' => $type])) {
