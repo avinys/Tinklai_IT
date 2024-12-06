@@ -10,7 +10,7 @@ class UsersController
             session_start();
         }
 
-        if ($_SESSION["user_id"] != "Administratorius") {
+        if ($_SESSION["role"] != "Administratorius") {
             header("Location: index.php?page=unauthorized");
             exit();
         }
