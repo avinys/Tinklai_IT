@@ -6,7 +6,8 @@
     <!-- The callback parameter is required, so we use console.debug as a noop -->
     <script async src="https://maps.googleapis.com/maps/api/js?key=<?= $apiKey ?>&callback=console.debug&libraries=maps,marker&v=beta">
     </script>
-    <link rel="stylesheet" href="/styles/global.css">
+    <!-- <link rel="stylesheet" href="/styles/global.css"> -->
+    <link rel="stylesheet" href="../public/styles/global.css">
     <style>
         /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
